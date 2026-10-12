@@ -15,7 +15,6 @@ public class PumpkinEspMod implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static boolean enabled = true;
-    /** Detection + render range in blocks (default 250). */
     public static double range = 250.0;
     public static boolean tracers = true;
     public static boolean boxes = true;
@@ -38,7 +37,7 @@ public class PumpkinEspMod implements ClientModInitializer {
                     client.player.sendMessage(
                             net.minecraft.text.Text.literal(
                                     "\u00a76[Pumpkin ESP] \u00a7f" + (enabled ? "\u00a7aON" : "\u00a7cOFF")
-                                            + " \u00a77(range " + (int) range + ")"
+                                            + " \u00a77(range " + (int) range + ", through walls)"
                             ),
                             true
                     );
@@ -50,7 +49,6 @@ public class PumpkinEspMod implements ClientModInitializer {
         });
 
         WorldRenderEvents.AFTER_TRANSLUCENT.register(PumpkinRenderer::render);
-
-        LOGGER.info("Pumpkin ESP loaded — range {} blocks, toggle key P", (int) range);
+        LOGGER.info("Pumpkin ESP 1.21.11 — range {} through-walls, toggle P", (int) range);
     }
 }
