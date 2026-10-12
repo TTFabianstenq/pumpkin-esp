@@ -3,7 +3,7 @@ package dev.pumpkinesp;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderEvents;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
@@ -48,7 +48,8 @@ public class PumpkinEspMod implements ClientModInitializer {
             }
         });
 
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(PumpkinRenderer::render);
+        // 1.21.11: WorldRenderEvents lives under ...rendering.v1.world
+        WorldRenderEvents.BEFORE_TRANSLUCENT.register(PumpkinRenderer::render);
         LOGGER.info("Pumpkin ESP 1.21.11 — range {} through-walls, toggle P", (int) range);
     }
 }
