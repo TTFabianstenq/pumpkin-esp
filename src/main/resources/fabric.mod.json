@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "pumpkin-esp",
+  "version": "${version}",
+  "name": "Pumpkin ESP",
+  "description": "ESP for pumpkins, carved pumpkins, and jack o'lanterns up to 250 blocks.",
+  "authors": ["PumpkinESP"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.pumpkinesp.PumpkinEspMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
