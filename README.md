@@ -1,29 +1,18 @@
-# Pumpkin ESP
+# Pumpkin ESP (Fabric 1.21.11)
 
-Fabric client mod for **Minecraft 1.21.1**. Highlights pumpkins, carved pumpkins, and jack o'lanterns with ESP up to **250 blocks** (within loaded chunks).
+Through-wall ESP for pumpkins / carved pumpkins / jack o'lanterns up to **250 blocks**.
 
-## Features
-- Detects `pumpkin`, `carved_pumpkin`, `jack_o_lantern`
-- Configurable range (default **250**)
-- Box ESP + optional tracers
-- Toggle keybind (default **P**)
-- Incremental chunk scan (no lag spikes)
-
-## Requirements
-- Minecraft **1.21.1**
-- Fabric Loader **0.16+**
-- Fabric API
+- Toggle: **P**
+- Orange boxes + tracers
+- Depth test disabled (visible through walls)
+- Incremental chunk scan
 
 ## Install
-1. Install Fabric Loader for 1.21.1
-2. Put `pumpkin-esp-1.0.0.jar` and Fabric API into `.minecraft/mods`
-3. Press **P** in-game to toggle
+1. Fabric Loader for **1.21.11**
+2. Fabric API
+3. `pumpkin-esp-1.1.0.jar` into `mods/`
 
 ## Build
 ```bash
 ./gradlew build
 ```
-Output: `build/libs/pumpkin-esp-1.0.0.jar`
-
-## Note
-The client only has block data for **loaded chunks**. With render distance 16 (256 blocks), 250-block detection works for anything loaded around you. Unloaded terrain cannot be scanned client-side.

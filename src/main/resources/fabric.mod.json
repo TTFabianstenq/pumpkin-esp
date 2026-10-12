@@ -3,18 +3,16 @@
   "id": "pumpkin-esp",
   "version": "${version}",
   "name": "Pumpkin ESP",
-  "description": "ESP for pumpkins, carved pumpkins, and jack o'lanterns up to 250 blocks.",
+  "description": "Through-wall ESP for pumpkins up to 250 blocks (Fabric 1.21.11).",
   "authors": ["PumpkinESP"],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
-    "client": [
-      "dev.pumpkinesp.PumpkinEspMod"
-    ]
+    "client": ["dev.pumpkinesp.PumpkinEspMod"]
   },
   "depends": {
     "fabricloader": ">=0.16.0",
-    "minecraft": "~1.21.1",
+    "minecraft": "~1.21.11",
     "java": ">=21",
     "fabric-api": "*"
   }
