@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
@@ -12,15 +13,14 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 
-/**
- * Draws orange ESP boxes (and optional tracers) for found pumpkins.
- */
+/** Through-wall ESP — depth test OFF so boxes/tracers show through terrain. */
 public final class PumpkinRenderer {
     private static final float R = 1.0f;
-    private static final float G = 0.55f;
+    private static final float G = 0.45f;
     private static final float B = 0.0f;
-    private static final float A = 0.85f;
+    private static final float A = 1.0f;
 
     private PumpkinRenderer() {}
 
@@ -34,6 +34,8 @@ public final class PumpkinRenderer {
 
         Vec3d cam = ctx.camera().getPos();
         MatrixStack matrices = ctx.matrixStack();
+        if (matrices == null) return;
+
         matrices.push();
         matrices.translate(-cam.x, -cam.y, -cam.z);
         Matrix4f matrix = matrices.peek().getPositionMatrix();
@@ -44,6 +46,9 @@ public final class PumpkinRenderer {
         RenderSystem.depthMask(false);
         RenderSystem.disableDepthTest();
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+        RenderSystem.lineWidth(3.0f);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
 
         Tessellator tessellator = Tessellator.getInstance();
 
@@ -53,7 +58,7 @@ public final class PumpkinRenderer {
                 if (!client.player.getBlockPos().isWithinDistance(pos, PumpkinEspMod.range)) continue;
                 drawBoxOutline(buffer, matrix, pos.getX(), pos.getY(), pos.getZ());
             }
-            net.minecraft.client.render.BufferRenderer.drawWithGlobalProgram(buffer.end());
+            BufferRenderer.drawWithGlobalProgram(buffer.end());
         }
 
         if (PumpkinEspMod.tracers) {
@@ -64,12 +69,15 @@ public final class PumpkinRenderer {
                 float x = pos.getX() + 0.5f;
                 float y = pos.getY() + 0.5f;
                 float z = pos.getZ() + 0.5f;
-                buffer.vertex(matrix, (float) eye.x, (float) eye.y, (float) eye.z).color(R, G, B, 0.6f);
-                buffer.vertex(matrix, x, y, z).color(R, G, B, 0.6f);
+                buffer.vertex(matrix, (float) eye.x, (float) eye.y, (float) eye.z).color(R, G, B, 0.8f);
+                buffer.vertex(matrix, x, y, z).color(R, G, B, 0.8f);
             }
-            net.minecraft.client.render.BufferRenderer.drawWithGlobalProgram(buffer.end());
+            BufferRenderer.drawWithGlobalProgram(buffer.end());
         }
 
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderSystem.lineWidth(1.0f);
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
         RenderSystem.enableCull();
@@ -80,7 +88,6 @@ public final class PumpkinRenderer {
     private static void drawBoxOutline(BufferBuilder buffer, Matrix4f matrix, int x, int y, int z) {
         float x0 = x, y0 = y, z0 = z;
         float x1 = x + 1, y1 = y + 1, z1 = z + 1;
-
         line(buffer, matrix, x0, y0, z0, x1, y0, z0);
         line(buffer, matrix, x1, y0, z0, x1, y0, z1);
         line(buffer, matrix, x1, y0, z1, x0, y0, z1);
